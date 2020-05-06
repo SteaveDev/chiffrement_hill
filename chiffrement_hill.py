@@ -1,3 +1,5 @@
+#chiffrement de Hill
+
 def estPremier(nb1,nb2):  #nb2 est ici le modulo
     reste=-1
     while reste!=0:
@@ -23,7 +25,7 @@ def pgcd_inverse(nb1, nb2): #def inverse(nb,modulo):
             nb1=nb2                 #affectation de nb1 pour les calculs suivant de tableau[indice+1]
             nb2=reste               #affectation de nb2 pour les calculs suivant de tableau[indice+1]
             tab[len(tab)]=tab1      #affecte le tableau temporaire au premier tableau
-        
+
         tab[len(tab)-1][4]=0    #on accede a la derniere case du tableau 'u=0'
         tab[len(tab)-1][5]=1    #on accede a la derniere case du tableau 'v=1'
         indice=len(tab)-2       #indice = avant derniere case du tableau
@@ -50,20 +52,20 @@ def inverseMatrice(matrice):
     return matrice2
 
 def decryptage(chaine,mat):
-    tab=dict()  
+    tab=dict()
     tab[len(tab)]=dict()    #tableau dans un tableau
-    for i in range(len(chaine)):       
+    for i in range(len(chaine)):
         tab[0][len(tab[0])]=ord(chaine[i])-65     #on passe d'une chaine a un nombre
 
-    tab[len(tab)]=dict()       
-    for i in range(0,len(chaine),2):    #on 
+    tab[len(tab)]=dict()
+    for i in range(0,len(chaine),2):    #on
         tab[1][i]=dict()
         tab[1][i][0]=tab[0][i]
         if(len(chaine)%2==1 and i==len(chaine)-1):    #si le nombre de caractere n'est pas pair
             tab[1][i][1]=0
         else:
             tab[1][i][1]=tab[0][i+1]
-    
+
     tab[len(tab)]=dict()        #tableau dans un tableau
     for i in range(0,len(tab[0]),2):
         matrice_temp=dict()     #tableau temporaire
@@ -74,10 +76,10 @@ def decryptage(chaine,mat):
         tab[2][i]=matrice_temp
 
     tab[3]=dict()       #tableau dans un tableau
-    for i in range(0,len(tab[0]),2):    
+    for i in range(0,len(tab[0]),2):
         tab[3][i]=tab[2][i][0]  #On affecte a tab[3][i] la premiere valeur du couple
         tab[3][i+1]=tab[2][i][1]    #On affecte a tab[3][i+1] la deuxieme valeur du couple
-        
+
     if(tab[3][0]==14 and tab[3][1]==13 and tab[3][2]==13):      #debut de message crypter 'ONN'
 
         nbConsonne=0
@@ -86,10 +88,10 @@ def decryptage(chaine,mat):
                 nbConsonne=0
             elif(nbConsonne>3): #si il y a plus de 4 consonnes
                 break
-            else:              
+            else:
                 nbConsonne = nbConsonne + 1
-        if(nbConsonne<4):   #si il y a moins de 4 consonnes dans la chaine 
-            conversion_chaine=""    
+        if(nbConsonne<4):   #si il y a moins de 4 consonnes dans la chaine
+            conversion_chaine=""
             for i in range(0,len(tab[3])):  #alors on converti la chaine en nombre
                 conversion_chaine+=chr(tab[3][i]+65)
             print(conversion_chaine)
